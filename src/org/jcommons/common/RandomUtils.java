@@ -1,6 +1,7 @@
 package org.jcommons.common;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -70,13 +71,13 @@ public class RandomUtils {
 		//List<Double> randomList = random(0, , n)
 	}
 	
-	public static <T> List<T> randomSelect(Set<T> set,int cnt){
+	public static <T> Collection<T> randomSelect(Collection<T> set,int cnt){
 		List<T> list = new ArrayList<T>(set);
 		return randomSelect(list, cnt);
 		//List<Double> randomList = random(0, , n)
 	}
 	
-	public static <T> List<T> randomSelect(Set<T> set,double ratio){
+	public static <T> List<T> randomSelect(Collection<T> set,double ratio){
 		List<T> list = new ArrayList<T>(set);
 		return randomSelect(list, ratio);
 		//List<Double> randomList = random(0, , n)
