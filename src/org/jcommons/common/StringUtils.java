@@ -607,8 +607,8 @@ public class StringUtils {
 		// TODO Auto-generated method stub
 		// String sql = "insert into 'category' value(1,'abc',2,3,4)";
 		// String regex = "(?:\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,3}$)";
-		String str = "fasdf  fdasf     fasd";
-		System.out.println(trimOne(str));
+		String str = "fasdfasdf((fasdf(fasdf)a)";
+		System.out.println(removerRoundBrackets(str));
 	}
 
 	/**
