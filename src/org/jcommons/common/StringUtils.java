@@ -20,37 +20,6 @@ public class StringUtils {
 		return str.replaceAll( "\\(.+\\)", "");
 	}
 	
-	public static Map<String, Double> getKgram(String content, int k) {
-		String[] arr = content.toLowerCase().split("\\s+");
-		Map<String, Double> allWords = new HashMap<String, Double>();
-		for (int i = 0; i < arr.length - k + 1; i++) {
-			String word = "";
-			for (int j = i; j < i + k; j++) {
-				word += arr[j] + " ";
-			}
-			//word = Utils.singularize(word.trim());
-			allWords = CommonUtils.addToMap(allWords, word.trim());
-		}
-		return allWords;
-	}
-	
-	public boolean ngram(String wiki, String concept) {
-		String[] arr = wiki.toLowerCase().split("\\s+");
-		int length = concept.split("-").length;
-		List<String> allWords = new ArrayList<String>();
-		for (int i = 0; i < arr.length - length + 1; i++) {
-			String word = "";
-			for (int j = i; j < i + length; j++) {
-				word += arr[j] + " ";
-			}
-			allWords.add(word.trim());
-		}
-		concept = concept.replace("-", " ");
-		if (allWords.contains(concept))
-			return true;
-		else
-			return false;
-	}
 	public static List<String> splitAsCamel(String str) {
 		// str = underScoreToCamel(str);
 		str = normalize(str);
@@ -356,7 +325,14 @@ public class StringUtils {
 		return column.toString();
 	}
 
-	public static String encode(String src) {
+	public static String encode(String src,String srcCode,String destCode) {
+		try {
+			byte[] strby = src.getBytes(srcCode);
+			String dest = new String(strby,destCode);
+			return dest;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -607,8 +583,8 @@ public class StringUtils {
 		// TODO Auto-generated method stub
 		// String sql = "insert into 'category' value(1,'abc',2,3,4)";
 		// String regex = "(?:\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,3}$)";
-		String str = "fasdfasdf((fasdf(fasdf)a)";
-		System.out.println(removerRoundBrackets(str));
+		String str = "www.codeproject.com";
+		System.out.println(checkRegex(str, RegexList.url_regexp));
 	}
 
 	/**

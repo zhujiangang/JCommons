@@ -301,7 +301,14 @@ public class DateUtils {
 		return result;
 	}
 	
+	//"yyyy-MM-dd HH:mm:ss"
 
+	public static String dateToStr(Date source) {
+		String result = null;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		result = format.format(source);
+		return result;
+	}
 	public static String resoveTime(final String time) {
 		String[] array = time.split(":");
 		StringBuilder sb = new StringBuilder();

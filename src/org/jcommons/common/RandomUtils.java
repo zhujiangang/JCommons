@@ -42,6 +42,19 @@ public class RandomUtils {
 		}
 		return ret;
 	}
+	
+	public static Set<Integer> randomDiff(int min,int max,int n,Set<Integer> excluded){
+		Set<Integer> ret = new HashSet<Integer>();
+		int delta=max-min;
+		int r,rand;
+		while(ret.size()<n){
+			r=(int) (Math.random()*delta);
+			rand=r+min;
+			if(!excluded.contains(rand))
+				ret.add(rand);
+		}
+		return ret;
+	}
 	public static <T> List<T> randomSelect(List<T> list,int cnt){
 		if(list==null)
 			return null;

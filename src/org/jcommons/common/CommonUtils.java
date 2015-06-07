@@ -51,6 +51,13 @@ public class CommonUtils {
 		return System.getProperty("user.dir");
 	}
 	
+	public static boolean exist(char[] chArr, char ch){
+		for(char ele : chArr){
+			if(ch==ele)
+				return true;
+		}
+		return false;
+	}
 	public static <K, V> void fill(Map<K,V> map, Set<K> keySet, V v){
 		if(keySet==null || map==null)
 			return;
@@ -151,14 +158,14 @@ public class CommonUtils {
 		return map;
 	}
 
-	public static <T> Map<T, Set<T>> addToMap(Map<T, Set<T>> map, T key, T value) {
+	public static <K, V> Map<K, Set<V>> addToMap(Map<K, Set<V>> map, K key, V value) {
 		if (map == null)
 			return null;
 		if (key == null || value == null)
 			return map;
-		Set<T> set = map.get(key);
+		Set<V> set = map.get(key);
 		if (set == null)
-			set = new HashSet<T>();
+			set = new HashSet<V>();
 		set.add(value);
 		map.put(key, set);
 		return map;
@@ -1287,6 +1294,18 @@ public class CommonUtils {
 		String str = "";
 		if(list==null)
 			return null;
+		for(int i=0; i<list.size(); i++)
+			str += list.get(i).toString()+spliter;
+		if(str.endsWith(spliter))
+			str = str.substring(0, str.length()-spliter.length());
+		return str.trim();
+	}
+	
+	public static <T> String arr2Str(T[] arr,String spliter){
+		String str = "";
+		if(arr==null)
+			return null;
+		List<T> list = arr2List(arr);
 		for(int i=0; i<list.size(); i++)
 			str += list.get(i).toString()+spliter;
 		if(str.endsWith(spliter))

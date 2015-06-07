@@ -1,7 +1,7 @@
 #JCommons
 
 ----------
-This is a general Java toolkit focused on some common aspects of reusable Java components.
+This is a general Java toolkit focused on some common aspects of reusable Java components. The goals of the project are speed, efficiency, and an easy to use Java API.
 
 The **JCommons** project is mainly composed of three parts:
 
