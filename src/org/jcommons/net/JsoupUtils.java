@@ -50,7 +50,8 @@ public class JsoupUtils {
 		int times = 1000;
 		while (!flag) {
 			try {
-				res = Jsoup.connect(url).timeout(5000).execute();
+				res = Jsoup.connect(url).timeout(5000).header("User-Agent",
+						"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0").execute();
 				//times--;
 				if (res != null
 						&& (res.statusCode() == 200 || res
