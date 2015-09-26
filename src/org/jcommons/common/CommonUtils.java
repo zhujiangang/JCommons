@@ -50,88 +50,96 @@ public class CommonUtils {
 	public static String getRootPath() {
 		return System.getProperty("user.dir");
 	}
-	
-	public static boolean exist(char[] chArr, char ch){
-		for(char ele : chArr){
-			if(ch==ele)
+
+	public static boolean exist(char[] chArr, char ch) {
+		for (char ele : chArr) {
+			if (ch == ele)
 				return true;
 		}
 		return false;
 	}
-	public static <K, V> void fill(Map<K,V> map, Set<K> keySet, V v){
-		if(keySet==null || map==null)
+
+	public static <K, V> void fill(Map<K, V> map, Set<K> keySet, V v) {
+		if (keySet == null || map == null)
 			return;
-		for(K k: keySet){
+		for (K k : keySet) {
 			map.put(k, v);
 		}
 	}
-	
-	public static <K, V> void mapCopy(Map<K,V> srcMap, Map<K,V> destMap){
-		if(srcMap==null || destMap==null)
+
+	public static <K, V> void mapCopy(Map<K, V> srcMap, Map<K, V> destMap) {
+		if (srcMap == null || destMap == null)
 			return;
-		for(Map.Entry<K, V> entry : srcMap.entrySet())
+		for (Map.Entry<K, V> entry : srcMap.entrySet())
 			destMap.put(entry.getKey(), entry.getValue());
 	}
-	public static Double[] map2Arr(Map<Integer, Double> map){
+
+	public static Double[] map2Arr(Map<Integer, Double> map) {
 		int size = map.keySet().size();
 		Double[] t = new Double[size];
-		for(Map.Entry<Integer, Double> entry : map.entrySet())
+		for (Map.Entry<Integer, Double> entry : map.entrySet())
 			t[entry.getKey()] = entry.getValue();
 		return t;
 	}
-	
-	public static <T> Double getFromDoubleMap(Map<T,Map<T,Double>> map, T key1,T key2){
-		Map<T,Double> map2 = map.get(key1);
-		if(map2==null)
+
+	public static <T> Double getFromDoubleMap(Map<T, Map<T, Double>> map,
+			T key1, T key2) {
+		Map<T, Double> map2 = map.get(key1);
+		if (map2 == null)
 			return null;
 		return map2.get(key2);
 	}
-	public static <T> List<T> getTopkFromList(List<T> list,int k){
-		if(k>list.size())
+
+	public static <T> List<T> getTopkFromList(List<T> list, int k) {
+		if (k > list.size())
 			return list;
-		else{
+		else {
 			List<T> ret = new ArrayList<T>();
-			for(int i=0; i<k; i++){
+			for (int i = 0; i < k; i++) {
 				ret.add(list.get(i));
 			}
 			return ret;
 		}
 	}
-	
-	public static <K, V> Map<K,Map<K,V>> addToMap(Map<K,Map<K,V>> map,K key1,K key2,V value){
-		if(map==null)
+
+	public static <K, V> Map<K, Map<K, V>> addToMap(Map<K, Map<K, V>> map,
+			K key1, K key2, V value) {
+		if (map == null)
 			return null;
-		Map<K,V> valueMap = map.get(key1);
-		if(valueMap==null)
+		Map<K, V> valueMap = map.get(key1);
+		if (valueMap == null)
 			valueMap = new HashMap<K, V>();
 		valueMap.put(key2, value);
 		map.put(key1, valueMap);
 		return map;
 	}
-	
-	public static <T> Map<T,List<T>> addToListMap(Map<T,List<T>> map, T key,T value){
-		if(map==null)
+
+	public static <T> Map<T, List<T>> addToListMap(Map<T, List<T>> map, T key,
+			T value) {
+		if (map == null)
 			return null;
-		if(key==null || value==null)
+		if (key == null || value == null)
 			return map;
 		List<T> set = map.get(key);
-		if(set==null)
+		if (set == null)
 			set = new ArrayList<T>();
 		set.add(value);
 		map.put(key, set);
 		return map;
 	}
-	
-	public static <T> Map<T,Map<T,Double>> addToMapWithFreq(Map<T,Map<T,Double>> map,T key,T value,Double freq){
-		if(map==null)
+
+	public static <T> Map<T, Map<T, Double>> addToMapWithFreq(
+			Map<T, Map<T, Double>> map, T key, T value, Double freq) {
+		if (map == null)
 			return null;
-		Map<T,Double> valueMap = map.get(key);
-		if(valueMap==null)
+		Map<T, Double> valueMap = map.get(key);
+		if (valueMap == null)
 			valueMap = new HashMap<T, Double>();
 		valueMap = addToMap(valueMap, value, freq);
 		map.put(key, valueMap);
 		return map;
 	}
+
 	public static <T> Map<T, Double> addToMap(Map<T, Double> map,
 			Map<T, Double> toAdd) {
 		if (map == null)
@@ -158,7 +166,8 @@ public class CommonUtils {
 		return map;
 	}
 
-	public static <K, V> Map<K, Set<V>> addToMap(Map<K, Set<V>> map, K key, V value) {
+	public static <K, V> Map<K, Set<V>> addToMap(Map<K, Set<V>> map, K key,
+			V value) {
 		if (map == null)
 			return null;
 		if (key == null || value == null)
@@ -170,7 +179,7 @@ public class CommonUtils {
 		map.put(key, set);
 		return map;
 	}
-	
+
 	public static <T> Map<T, Double> addToMap(Map<T, Double> map, T key) {
 		if (map == null)
 			return null;
@@ -202,26 +211,29 @@ public class CommonUtils {
 			Map.Entry<T, Double> tmpEntry = null;
 			while (iter.hasNext()) {
 				tmpEntry = iter.next();
-				sortedMap.put(tmpEntry.getKey(), Double.parseDouble(tmpEntry.getValue()+""));
+				sortedMap.put(tmpEntry.getKey(),
+						Double.parseDouble(tmpEntry.getValue() + ""));
 			}
 		}
 		return sortedMap;
 	}
 
-	public static <T> Map<T, BigDecimal> sortMapByBDValue(Map<T, BigDecimal> oriMap) {
+	public static <T> Map<T, BigDecimal> sortMapByBDValue(
+			Map<T, BigDecimal> oriMap) {
 		Map<T, BigDecimal> sortedMap = new LinkedHashMap<T, BigDecimal>();
 		if (oriMap != null && !oriMap.isEmpty()) {
 			List<Map.Entry<T, BigDecimal>> entryList = new ArrayList<Map.Entry<T, BigDecimal>>(
 					oriMap.entrySet());
-			Collections.sort(entryList, new Comparator<Map.Entry<T, BigDecimal>>() {
-				public int compare(Entry<T, BigDecimal> entry1,
-						Entry<T, BigDecimal> entry2) {
-					BigDecimal value1 = entry1.getValue();
-					BigDecimal value2 = entry2.getValue();
+			Collections.sort(entryList,
+					new Comparator<Map.Entry<T, BigDecimal>>() {
+						public int compare(Entry<T, BigDecimal> entry1,
+								Entry<T, BigDecimal> entry2) {
+							BigDecimal value1 = entry1.getValue();
+							BigDecimal value2 = entry2.getValue();
 
-					return value2.compareTo(value1);
-				}
-			});
+							return value2.compareTo(value1);
+						}
+					});
 			Iterator<Map.Entry<T, BigDecimal>> iter = entryList.iterator();
 			Map.Entry<T, BigDecimal> tmpEntry = null;
 			while (iter.hasNext()) {
@@ -231,23 +243,24 @@ public class CommonUtils {
 		}
 		return sortedMap;
 	}
-	
-	public static <T> Map<T, Double> sortMapByValue(Map<T, Double> oriMap,final boolean isDesc) {
+
+	public static <T> Map<T, Double> sortMapByValue(Map<T, Double> oriMap,
+			final boolean isDesc) {
 		Map<T, Double> sortedMap = new LinkedHashMap<T, Double>();
 		if (oriMap != null && !oriMap.isEmpty()) {
-			List<Map.Entry<T, Double>> entryList = new ArrayList<Map.Entry<T, Double>>(oriMap.entrySet());
-			Collections.sort(entryList,
-					new Comparator<Map.Entry<T, Double>>() {
-						public int compare(Entry<T, Double> entry1,
-								Entry<T, Double> entry2) {
-							Double value1 = entry1.getValue();
-							Double value2 = entry2.getValue();
-							if(isDesc)
-								return value2.compareTo(value1);
-							else
-								return value1.compareTo(value2);
-						}
-					});
+			List<Map.Entry<T, Double>> entryList = new ArrayList<Map.Entry<T, Double>>(
+					oriMap.entrySet());
+			Collections.sort(entryList, new Comparator<Map.Entry<T, Double>>() {
+				public int compare(Entry<T, Double> entry1,
+						Entry<T, Double> entry2) {
+					Double value1 = entry1.getValue();
+					Double value2 = entry2.getValue();
+					if (isDesc)
+						return value2.compareTo(value1);
+					else
+						return value1.compareTo(value2);
+				}
+			});
 			Iterator<Map.Entry<T, Double>> iter = entryList.iterator();
 			Map.Entry<T, Double> tmpEntry = null;
 			while (iter.hasNext()) {
@@ -257,32 +270,33 @@ public class CommonUtils {
 		}
 		return sortedMap;
 	}
-	
-	public static <V> Map<Date, V> sortMapByDateKey(Map<Date, V> oriMap, final boolean isDesc) {
+
+	public static <V> Map<Date, V> sortMapByDateKey(Map<Date, V> oriMap,
+			final boolean isDesc) {
 		if (oriMap == null || oriMap.isEmpty()) {
 			return null;
 		}
-		Map<Date, V> sortedMap = new TreeMap<Date, V>(
-				new Comparator<Date>() {
-					public int compare(Date key1, Date key2) {
-						if(isDesc)
-							return key1.compareTo(key2);
-						else
-							return key2.compareTo(key1);
-					}
-				});
+		Map<Date, V> sortedMap = new TreeMap<Date, V>(new Comparator<Date>() {
+			public int compare(Date key1, Date key2) {
+				if (isDesc)
+					return key1.compareTo(key2);
+				else
+					return key2.compareTo(key1);
+			}
+		});
 		sortedMap.putAll(oriMap);
 		return sortedMap;
 	}
-	
-	public static <V> Map<String, V> sortMapByStringKey(Map<String, V> oriMap, final boolean isDesc) {
+
+	public static <V> Map<String, V> sortMapByStringKey(Map<String, V> oriMap,
+			final boolean isDesc) {
 		if (oriMap == null || oriMap.isEmpty()) {
 			return null;
 		}
 		Map<String, V> sortedMap = new TreeMap<String, V>(
 				new Comparator<String>() {
 					public int compare(String key1, String key2) {
-						if(isDesc)
+						if (isDesc)
 							return key2.compareTo(key1);
 						else
 							return key1.compareTo(key2);
@@ -327,7 +341,7 @@ public class CommonUtils {
 		ret = ret.substring(0, ret.length() - spliter.length());
 		return ret;
 	}
-	
+
 	public static Set<String> string2Set(String str, String spliter) {
 		Set<String> retSet = new HashSet<String>();
 		if (str == null)
@@ -340,7 +354,7 @@ public class CommonUtils {
 		}
 		return retSet;
 	}
-	
+
 	public static List<String> string2List(String str, String spliter) {
 		List<String> retList = new ArrayList<String>();
 		if (str == null)
@@ -1289,34 +1303,35 @@ public class CommonUtils {
 	public static <T> Set<T> arr2Set(T[] arr) {
 		return list2Set(arr2List(arr));
 	}
-	
-	public static <T> String list2Str(List<T> list,String spliter){
+
+	public static <T> String list2Str(List<T> list, String spliter) {
 		String str = "";
-		if(list==null)
+		if (list == null)
 			return null;
-		for(int i=0; i<list.size(); i++)
-			str += list.get(i).toString()+spliter;
-		if(str.endsWith(spliter))
-			str = str.substring(0, str.length()-spliter.length());
+		for (int i = 0; i < list.size(); i++)
+			str += list.get(i).toString() + spliter;
+		if (str.endsWith(spliter))
+			str = str.substring(0, str.length() - spliter.length());
 		return str.trim();
 	}
-	
-	public static <T> String arr2Str(T[] arr,String spliter){
+
+	public static <T> String arr2Str(T[] arr, String spliter) {
 		String str = "";
-		if(arr==null)
+		if (arr == null)
 			return null;
 		List<T> list = arr2List(arr);
-		for(int i=0; i<list.size(); i++)
-			str += list.get(i).toString()+spliter;
-		if(str.endsWith(spliter))
-			str = str.substring(0, str.length()-spliter.length());
+		for (int i = 0; i < list.size(); i++)
+			str += list.get(i).toString() + spliter;
+		if (str.endsWith(spliter))
+			str = str.substring(0, str.length() - spliter.length());
 		return str.trim();
 	}
-	
-	public static <T> String set2Str(Set<T> set,String spliter){
+
+	public static <T> String set2Str(Set<T> set, String spliter) {
 		List<T> list = new ArrayList<T>(set);
 		return list2Str(list, spliter);
 	}
+
 	public static <T> List<T> arr2List(T[] arr) {
 		List<T> list = new ArrayList<T>();
 		if (arr == null)
@@ -1399,6 +1414,41 @@ public class CommonUtils {
 			}
 		}
 		return buffer.toString();
+	}
+
+	public static <T> Set<T> intersection(Set<T> a, Set<T> b) {
+		Set<T> set = new HashSet<T>();
+		if (a.size() <= b.size()) {
+			for (T t1 : a) {
+				if (b.contains(t1))
+					set.add(t1);
+			}
+		} else {
+			for (T t1 : b) {
+				if (a.contains(t1))
+					set.add(t1);
+			}
+		}
+
+		return set;
+	}
+
+	public static <T> Set<T> union(Set<T> a, Set<T> b) {
+		Set<T> set = new HashSet<T>();
+		if (a == null && b == null)
+			return null;
+		if (a == null && b != null) {
+			set = new HashSet<T>(b);
+			return set;
+		}
+		if (a != null && b == null) {
+			set = new HashSet<T>(a);
+			return set;
+		}
+
+		set.addAll(a);
+		set.addAll(b);
+		return set;
 	}
 
 	/**

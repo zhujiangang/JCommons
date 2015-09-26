@@ -13,13 +13,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
-	
-	public static String removerRoundBrackets(String str){
-		if(isBlank(str))
+
+	public static String removerRoundBrackets(String str) {
+		if (isBlank(str))
 			return str;
-		return str.replaceAll( "\\(.+\\)", "");
+		return str.replaceAll("\\(.+\\)", "");
 	}
-	
+
 	public static List<String> splitAsCamel(String str) {
 		// str = underScoreToCamel(str);
 		str = normalize(str);
@@ -27,57 +27,61 @@ public class StringUtils {
 		str = normalize(str);
 		String[] arr = str.split(" ");
 		List<String> list = new ArrayList<String>();
-		for(String s : arr){
-			if(!isBlank(s) && !s.equals("\\u") && !s.equals("\\n"))
+		for (String s : arr) {
+			if (!isBlank(s) && !s.equals("\\u") && !s.equals("\\n"))
 				list.add(s.toLowerCase().trim());
 		}
 		return list;
 	}
-	
-	public static List<String> sortByLength(List<String> dic,boolean isDesc){
-		Map<Integer,Double> indexLenMap = new HashMap<Integer, Double>();
-		if(dic==null)
+
+	public static List<String> sortByLength(List<String> dic, boolean isDesc) {
+		Map<Integer, Double> indexLenMap = new HashMap<Integer, Double>();
+		if (dic == null)
 			return null;
-		if(dic.size()==0)
+		if (dic.size() == 0)
 			return dic;
-		for(int i=0; i<dic.size(); i++){
-			indexLenMap.put(i, dic.get(i).length()+0.0d);
+		for (int i = 0; i < dic.size(); i++) {
+			indexLenMap.put(i, dic.get(i).length() + 0.0d);
 		}
 		indexLenMap = CommonUtils.sortMapByValue(indexLenMap, isDesc);
 		List<String> retList = new ArrayList<String>();
-		for(Map.Entry<Integer, Double> entry : indexLenMap.entrySet()){
+		for (Map.Entry<Integer, Double> entry : indexLenMap.entrySet()) {
 			retList.add(dic.get(entry.getKey()));
 		}
 		return retList;
 	}
-	public static boolean containCamel(String src,String str){
-//		while(src.contains(str)){
-//			int index = src.indexOf(str);
-//			String left = src.substring(0, index);
-//			String right = src.substring(index+str.length(), src.length());
-//			if(isFirstLowCase(str) && isEmpty(left) && (isEmpty(right)||!isFirstLowCase(right)))
-//				return true;
-//			if(!isFirstLowCase(str) && (isEmpty(left) || isLastLowCase(left)) && )
-//		}
+
+	public static boolean containCamel(String src, String str) {
+		// while(src.contains(str)){
+		// int index = src.indexOf(str);
+		// String left = src.substring(0, index);
+		// String right = src.substring(index+str.length(), src.length());
+		// if(isFirstLowCase(str) && isEmpty(left) &&
+		// (isEmpty(right)||!isFirstLowCase(right)))
+		// return true;
+		// if(!isFirstLowCase(str) && (isEmpty(left) || isLastLowCase(left)) &&
+		// )
+		// }
 		return false;
 	}
-	public static List<String> splitAsCamel(String str,List<String> dic) {
+
+	public static List<String> splitAsCamel(String str, List<String> dic) {
 		// str = underScoreToCamel(str);
-		//System.out.println(str);
+		// System.out.println(str);
 		str = normalize(str);
 		dic = CommonUtils.set2List(new HashSet<String>(dic));
 		dic = sortByLength(dic, true);
 		String origin = str.toLowerCase();
 		List<String> list = new ArrayList<String>();
-		for(String s : dic){
-			if(s.equals("?") || StringUtils.isBlank(s))
+		for (String s : dic) {
+			if (s.equals("?") || StringUtils.isBlank(s))
 				continue;
 			s = s.replaceAll("\\?", "").replaceAll("\\$", "");
-			while(str.contains(toUpCaseFirst(s))){
+			while (str.contains(toUpCaseFirst(s))) {
 				str = str.replaceFirst(toUpCaseFirst(s), "_");
 				list.add(toUpCaseFirst(s).toLowerCase());
 			}
-			while(str.contains(toLowCaseFirst(s))){
+			while (str.contains(toLowCaseFirst(s))) {
 				str = str.replaceFirst(toLowCaseFirst(s), "_");
 				list.add(toLowCaseFirst(s).toLowerCase());
 			}
@@ -85,29 +89,29 @@ public class StringUtils {
 		str = camelToUnderScore(str);
 		str = normalize(str);
 		String[] arr = str.split(" ");
-		//List<String> list = new ArrayList<String>();
-		for(String s : arr){
-			if(!isBlank(s) && !s.equals("\\u") && !s.equals("\\n"))
+		// List<String> list = new ArrayList<String>();
+		for (String s : arr) {
+			if (!isBlank(s) && !s.equals("\\u") && !s.equals("\\n"))
 				list.add(s.trim());
 		}
-		Map<Integer,Double> indexMap= new HashMap<Integer,Double>();
-		Map<String,Integer> strMapIndex = new HashMap<String, Integer>();
-		for(int i=0; i<list.size(); i++){
-			if(strMapIndex.get(list.get(i))==null){
-				indexMap.put(i, origin.indexOf(list.get(i))+0.0d);
+		Map<Integer, Double> indexMap = new HashMap<Integer, Double>();
+		Map<String, Integer> strMapIndex = new HashMap<String, Integer>();
+		for (int i = 0; i < list.size(); i++) {
+			if (strMapIndex.get(list.get(i)) == null) {
+				indexMap.put(i, origin.indexOf(list.get(i)) + 0.0d);
 				strMapIndex.put(list.get(i), origin.indexOf(list.get(i)));
-			}else{
+			} else {
 				int lastStart = strMapIndex.get(list.get(i));
-				String tmp = origin.substring(lastStart+list.get(i).length());
+				String tmp = origin.substring(lastStart + list.get(i).length());
 				int newIndex = tmp.indexOf(list.get(i));
-				newIndex = lastStart+list.get(i).length()+newIndex;
-				indexMap.put(i, newIndex+0.0d);
+				newIndex = lastStart + list.get(i).length() + newIndex;
+				indexMap.put(i, newIndex + 0.0d);
 				strMapIndex.put(list.get(i), newIndex);
 			}
 		}
 		indexMap = CommonUtils.sortMapByValue(indexMap, false);
 		List<String> retList = new ArrayList<String>();
-		for(Map.Entry<Integer, Double> entry : indexMap.entrySet()){
+		for (Map.Entry<Integer, Double> entry : indexMap.entrySet()) {
 			retList.add(list.get(entry.getKey()));
 		}
 		return retList;
@@ -117,19 +121,21 @@ public class StringUtils {
 		// str = underScoreToCamel(str);
 		List<String> list = splitAsCamel(str);
 		String retStr = "";
-		for(String s : list){
-			retStr += s+" ";
+		for (String s : list) {
+			retStr += s + " ";
 		}
 		return retStr.trim();
 	}
-	
+
 	/**
 	 * @param filePathAndName
 	 * @throws FileNotFoundException
 	 * @throws UnsupportedEncodingException
 	 */
 	public static String clearComment(String filecontent) {
-		//str = str.replaceAll("\\/\\/[^\\n]*|\\/\\*([^\\*^\\/]*|[\\*^\\/*]*|[^\\**\\/]*)*\\*\\/", "");
+		// str =
+		// str.replaceAll("\\/\\/[^\\n]*|\\/\\*([^\\*^\\/]*|[\\*^\\/*]*|[^\\**\\/]*)*\\*\\/",
+		// "");
 		// 1、清除单行的注释，如： //某某，正则为 ：\/\/.*
 		// 2、清除单行的注释，如：/** 某某 */，正则为：\/\*\*.*\*\/
 		// 3、清除单行的注释，如：/* 某某 */，正则为：\/\*.*\*\/
@@ -209,6 +215,77 @@ public class StringUtils {
 		return unicodeBytes;
 	}
 
+	/**
+	 * Get Unicode expression of the given string. For N-Triples encoding
+	 * (http://www.w3.org/TR/rdf-testcases/#ntrip_strings).
+	 * 
+	 * @param str
+	 *            the string that to be encoded
+	 * @return encoded string
+	 */
+	public static String getUnicode(String str) {
+		String unicode = "";
+		for (int i = 0; i < str.length(); ++i) {
+			char ch = str.charAt(i);
+			if (ch > 0xFFF && ch <= 0xFFFF) {
+				unicode += "\\u" + Integer.toHexString(ch).toUpperCase();
+			} else if (ch > 0xFF && ch <= 0xFFF) {
+				unicode += "\\u0" + Integer.toHexString(ch).toUpperCase();
+			} else if (ch >= 0x7F && ch <= 0xFF) {
+				unicode += "\\u00" + Integer.toHexString(ch).toUpperCase();
+			} else if (ch <= 0x7E) {
+				if (ch <= 0xF) {
+					if (ch == 0x9)
+						unicode += "\\t";
+					else if (ch == 0xA)
+						unicode += "\\n";
+					else if (ch == 0xD)
+						unicode += "\\r";
+					else
+						unicode += "\\u000"
+								+ Integer.toHexString(ch).toUpperCase();
+				} else if (ch > 0xF && ch <= 0x1F) {
+					unicode += "\\u00" + Integer.toHexString(ch).toUpperCase();
+				} else {
+					if (ch == 0x22)
+						unicode += "\\\"";
+					else if (ch == 0x5C)
+						unicode += "\\\\";
+					else
+						unicode += ch;
+				}
+			} else {
+				unicode += "\\U" + Integer.toHexString(ch).toUpperCase();
+			}
+		}
+		return unicode;
+	}
+
+	/**
+	 * Convert Unicode expression to the original string. For N-Triples decoding
+	 * (http://www.w3.org/TR/rdf-testcases/#ntrip_strings).
+	 * 
+	 * @param str
+	 *            the string that to be decoded
+	 * @return decoded string
+	 */
+	public static String UnicodeToString(String str) {
+		Pattern pattern = Pattern
+				.compile("(\\\\u(\\p{XDigit}{4}))|(\\\\U(\\p{XDigit}{8}))");
+		Matcher matcher = pattern.matcher(str);
+		char ch;
+		while (matcher.find()) {
+			ch = (char) Integer.parseInt(matcher.group(0).substring(2), 16);
+			str = str.replace(matcher.group(0), ch + "");
+		}
+		str = str.replace("\\t", "\t");
+		str = str.replace("\\n", "\n");
+		str = str.replace("\\r", "\r");
+		str = str.replace("\\\"", "\"");
+		str = str.replace("\\\\", "\\");
+		return str;
+	}
+
 	public static String normalize(String str) {
 		str = URLDecoder.decode(str);
 
@@ -231,12 +308,12 @@ public class StringUtils {
 			return false;
 	}
 
-//	public static String[] splitAsCamel(String str) {
-//		// str = underScoreToCamel(str);
-//		str = camelToUnderScore(str);
-//		str = normalize(str);
-//		return str.split(" ");
-//	}
+	// public static String[] splitAsCamel(String str) {
+	// // str = underScoreToCamel(str);
+	// str = camelToUnderScore(str);
+	// str = normalize(str);
+	// return str.split(" ");
+	// }
 
 	public static String trimRight(String str) {
 		if (str.length() > 9) {
@@ -325,10 +402,10 @@ public class StringUtils {
 		return column.toString();
 	}
 
-	public static String encode(String src,String srcCode,String destCode) {
+	public static String encode(String src, String srcCode, String destCode) {
 		try {
 			byte[] strby = src.getBytes(srcCode);
-			String dest = new String(strby,destCode);
+			String dest = new String(strby, destCode);
 			return dest;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -336,8 +413,22 @@ public class StringUtils {
 		return null;
 	}
 
-	public static String decode(String src) {
-		return null;
+	public static String encode(String str) {
+		try {
+			return URLEncoder.encode(str, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException("Broken VM does not support UTF-8");
+		}
+	}
+
+	public static String decode(String str) {
+		try {
+			return URLDecoder.decode(str, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException("Broken VM does not support UTF-8");
+		} catch (Exception e) {
+			return "";
+		}
 	}
 
 	public static char toUpperCase(char ch) {
@@ -583,8 +674,9 @@ public class StringUtils {
 		// TODO Auto-generated method stub
 		// String sql = "insert into 'category' value(1,'abc',2,3,4)";
 		// String regex = "(?:\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,3}$)";
-		String str = "www.codeproject.com";
-		System.out.println(checkRegex(str, RegexList.url_regexp));
+		String str = "汉子";
+		System.out.println(str2Unicode(str));
+		System.out.println(getUnicode(str));
 	}
 
 	/**
@@ -601,8 +693,8 @@ public class StringUtils {
 		str = str.replaceAll("\\s*|\t|\r|\n", "");// 去除字符串中的空格,回车,换行符,制表符
 		return str.trim();
 	}
-	
-	public static String trimAll(String str,String ch) {
+
+	public static String trimAll(String str, String ch) {
 		str = str.replace("&nbsp;", ch);
 		str = str.replace(".", ch);
 		str = str.replace("\"", "‘");

@@ -51,7 +51,7 @@ public class FileUtils {
 
 	public static void mergeFile(File src1, File src2, File dest) {
 		final BufferedWriter writer = FileUtils.getBufferedWriter(dest);
-		FileUtils.readFile(src1, new ILineHandler() {
+		FileUtils.readLine(src1, new ILineHandler() {
 
 			@Override
 			public void process(String line) throws Exception {
@@ -59,7 +59,7 @@ public class FileUtils {
 				writer.write(line + "\n");
 			}
 		});
-		FileUtils.readFile(src2, new ILineHandler() {
+		FileUtils.readLine(src2, new ILineHandler() {
 
 			@Override
 			public void process(String line) throws Exception {
@@ -136,7 +136,7 @@ public class FileUtils {
 		}
 	}
 
-	public static void readFile(File file, ILineHandler handler) {
+	public static void readLine(File file, ILineHandler handler) {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new InputStreamReader(
