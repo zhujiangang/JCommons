@@ -551,6 +551,12 @@ public class FileUtils {
 			return file.getName();
 		return file.getName().substring(0, file.getName().lastIndexOf("."));
 	}
+	
+	public static String getFileNameWithoutExt(String fileName) {
+		if (fileName.lastIndexOf(".") == -1)
+			return fileName;
+		return fileName.substring(0, fileName.lastIndexOf("."));
+	}
 
 	/**
 	 * 返回某个类所在包最顶层文件夹
