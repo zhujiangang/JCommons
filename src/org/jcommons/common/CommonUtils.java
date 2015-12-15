@@ -320,27 +320,6 @@ public class CommonUtils {
 		return i;
 	}
 
-	public static <T> String set2String(Set<T> set, String spliter) {
-		String ret = "";
-		if (set == null || set.size() == 0)
-			return ret;
-		for (Object str : set) {
-			ret += str.toString() + spliter;
-		}
-		ret = ret.substring(0, ret.length() - spliter.length());
-		return ret;
-	}
-
-	public static <T> String list2String(List<T> list, String spliter) {
-		String ret = "";
-		if (list == null || list.size() == 0)
-			return ret;
-		for (Object str : list) {
-			ret += str.toString() + spliter;
-		}
-		ret = ret.substring(0, ret.length() - spliter.length());
-		return ret;
-	}
 
 	public static Set<String> string2Set(String str, String spliter) {
 		Set<String> retSet = new HashSet<String>();
@@ -976,11 +955,6 @@ public class CommonUtils {
 		return Locale.ENGLISH;
 	}
 
-	public static String upperFirst(String s) {
-		return s.replaceFirst(s.substring(0, 1), s.substring(0, 1)
-				.toUpperCase());
-	}
-
 	public static Map<String, Object> map(String k, Object v) {
 		Map<String, Object> map = new HashMap<String, Object>(1);
 		map.put(k, v);
@@ -1150,69 +1124,6 @@ public class CommonUtils {
 		}
 	}
 
-	/**
-	 * @功能 将字符串首字母转为大写
-	 * @param str
-	 *            要转换的字符串
-	 * @return String 型值
-	 */
-	public static String toUpCaseFirst(String str) {
-		if (str == null || "".equals(str)) {
-			return str;
-		} else {
-			char[] temp = str.toCharArray();
-			temp[0] = str.toUpperCase().toCharArray()[0];
-			str = String.valueOf(temp);
-		}
-
-		return str;
-	}
-
-	public static String toLowCaseFirst(String str) {
-		if (str == null || "".equals(str)) {
-			return str;
-		} else {
-			char[] temp = str.toCharArray();
-			temp[0] = str.toLowerCase().toCharArray()[0];
-			str = String.valueOf(temp);
-		}
-
-		return str;
-	}
-
-	/**
-	 * 批量将英文字符串首字母转为大写
-	 * 
-	 * @param str
-	 *            要转换的字符串数组
-	 * @return 字符数组
-	 */
-	public static String[] toUpCaseFirst(String[] str) {
-		if (str == null || str.length == 0) {
-			return str;
-		} else {
-			String[] result = new String[str.length];
-			for (int i = 0; i < result.length; ++i) {
-				result[i] = CommonUtils.toUpCaseFirst(str[i]);
-			}
-
-			return result;
-		}
-	}
-
-	public static String[] toLowCaseFirst(String[] str) {
-		if (str == null || str.length == 0) {
-			return str;
-		} else {
-			String[] result = new String[str.length];
-			for (int i = 0; i < result.length; ++i) {
-				result[i] = CommonUtils.toLowCaseFirst(str[i]);
-			}
-
-			return result;
-		}
-	}
-
 	public static String hump2ohter(String param, String aother) {
 		char other = aother.toCharArray()[0];
 		Pattern p = Pattern.compile("[A-Z]");
@@ -1304,41 +1215,9 @@ public class CommonUtils {
 		return list2Set(arr2List(arr));
 	}
 
-	public static <T> String list2Str(List<T> list, String spliter) {
-		String str = "";
-		if (list == null)
-			return null;
-		for (int i = 0; i < list.size(); i++)
-			str += list.get(i).toString() + spliter;
-		if (str.endsWith(spliter))
-			str = str.substring(0, str.length() - spliter.length());
-		return str.trim();
-	}
-
-	public static <T> String arr2Str(T[] arr, String spliter) {
-		String str = "";
-		if (arr == null)
-			return null;
-		List<T> list = arr2List(arr);
-		for (int i = 0; i < list.size(); i++)
-			str += list.get(i).toString() + spliter;
-		if (str.endsWith(spliter))
-			str = str.substring(0, str.length() - spliter.length());
-		return str.trim();
-	}
-
-	public static <T> String set2Str(Set<T> set, String spliter) {
-		List<T> list = new ArrayList<T>(set);
-		return list2Str(list, spliter);
-	}
-
+	
 	public static <T> List<T> arr2List(T[] arr) {
-		List<T> list = new ArrayList<T>();
-		if (arr == null)
-			return list;
-		for (int i = 0; i < arr.length; i++)
-			list.add(arr[i]);
-		return list;
+		return Arrays.asList(arr);
 	}
 
 	/**
@@ -1402,18 +1281,6 @@ public class CommonUtils {
 
 	public static boolean isNullOrEmpty(Object obj) {
 		return obj == null || "".equals(obj.toString());
-	}
-
-	public static String join(Collection<?> s, String delimiter) {
-		StringBuffer buffer = new StringBuffer();
-		Iterator<?> iter = s.iterator();
-		while (iter.hasNext()) {
-			buffer.append(iter.next());
-			if (iter.hasNext()) {
-				buffer.append(delimiter);
-			}
-		}
-		return buffer.toString();
 	}
 
 	public static <T> Set<T> intersection(Set<T> a, Set<T> b) {
@@ -1879,10 +1746,7 @@ public class CommonUtils {
 	}
 
 	public static void main(String[] argv) {
-		Set<String> list = new HashSet<String>();
-		list.add("1");
-		list.add("2");
-		System.out.println(set2String(list, " "));
+		
 	}
 
 	private static class Url {

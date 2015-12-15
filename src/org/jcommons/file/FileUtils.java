@@ -36,7 +36,7 @@ import org.jcommons.common.CommonUtils;
 import org.jcommons.common.StringUtils;
 
 /**
- * 文件操作工具类
+ * This is a class for random file things
  * 
  * @author Zhu
  * 
@@ -136,30 +136,6 @@ public class FileUtils {
 		}
 	}
 
-	public static void readLine(File file, ILineHandler handler) {
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new InputStreamReader(
-					new FileInputStream(file), "utf-8"));
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				// if (StringUtils.isBlank(line))
-				// continue;
-				handler.process(line);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 	public static BufferedWriter getBufferedWriter(File file) {
 		BufferedWriter writer = null;
 		try {
@@ -184,19 +160,19 @@ public class FileUtils {
 		}
 	}
 
-	public static void writeFile(File f, Collection<String> list){
+	public static void writeFile(File f, Collection<String> list) {
 		BufferedWriter writer = getBufferedWriter(f);
 		if (list == null)
 			return;
 		// String content = "";
-		try{
+		try {
 			for (String str : list) {
 				// content += str + "\n";
 				writer.write(str + "\n");
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			closeWriter(writer);
 		}
 	}
@@ -221,11 +197,11 @@ public class FileUtils {
 		}
 	}
 
-	public static String readFile(InputStream in) {
+	public static String readFile(InputStream in, String encoding) {
 		BufferedReader reader = null;
 		StringBuilder sb = new StringBuilder();
 		try {
-			reader = new BufferedReader(new InputStreamReader(in, "utf-8"));
+			reader = new BufferedReader(new InputStreamReader(in, encoding));
 			String line = null;
 			while ((line = reader.readLine()) != null)
 				sb.append(line);
@@ -244,6 +220,20 @@ public class FileUtils {
 		return sb.toString();
 	}
 
+	public static String readFile(InputStream in) {
+		return readFile(in, "utf-8");
+	}
+
+	public static String readFile(File f, String encoding) {
+		try {
+			return readFile(new FileInputStream(f), encoding);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static String readFile(File f) {
 		try {
 			return readFile(new FileInputStream(f));
@@ -255,10 +245,14 @@ public class FileUtils {
 	}
 
 	public static List<String> readLine(InputStream in) {
+		return readLine(in, "utf-8");
+	}
+
+	public static List<String> readLine(InputStream in, String encoding) {
 		List<String> result = new ArrayList<String>();
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(in, "utf-8"));
+			reader = new BufferedReader(new InputStreamReader(in, encoding));
 			String line = null;
 			while ((line = reader.readLine()) != null)
 				result.add(line);
@@ -277,6 +271,16 @@ public class FileUtils {
 		return result;
 	}
 
+	public static List<String> readLine(File f, String encoding) {
+		try {
+			return readLine(new FileInputStream(f), encoding);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static List<String> readLine(File f) {
 		try {
 			return readLine(new FileInputStream(f));
@@ -285,6 +289,34 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void readLine(File file, ILineHandler handler) {
+		readLine(file, handler, "utf-8");
+	}
+
+	public static void readLine(File file, ILineHandler handler, String encoding) {
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(
+					new FileInputStream(file), encoding));
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				// if (StringUtils.isBlank(line))
+				// continue;
+				handler.process(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	public static String getExt(File f) {
@@ -551,7 +583,7 @@ public class FileUtils {
 			return file.getName();
 		return file.getName().substring(0, file.getName().lastIndexOf("."));
 	}
-	
+
 	public static String getFileNameWithoutExt(String fileName) {
 		if (fileName.lastIndexOf(".") == -1)
 			return fileName;

@@ -293,4 +293,6 @@ public class RegexList {
 	 * 数字和连字符下划线
 	 */
 	public static final String number_hyphen_regexp = "^[0-9\\-_]+$";
+	
+	public static final String double_square_brackets_content_regexp = "(?<=\\[\\[)(.+?)(?=\\]\\])";
 }

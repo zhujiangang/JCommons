@@ -145,7 +145,7 @@ public class ReflectUtils {
 	 * @return
 	 */
 	public Method getGetter(String name) {
-		return this.getMethod("get" + CommonUtils.toUpCaseFirst(name));
+		return this.getMethod("get" + StringUtils.toUpCaseFirst(name));
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class ReflectUtils {
 	 * @return
 	 */
 	public Method getSetter(String name) {
-		return this.getMethod("set" + CommonUtils.toUpCaseFirst(name));
+		return this.getMethod("set" + StringUtils.toUpCaseFirst(name));
 	}
 
 	/**

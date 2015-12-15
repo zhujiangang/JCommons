@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,6 +16,13 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
+	/**
+	 * remove round brackets (including the content in them)in a given string
+	 * eg. abc(ab)()d->abcd
+	 * 
+	 * @param str
+	 * @return
+	 */
 	public static String removerRoundBrackets(String str) {
 		if (isBlank(str))
 			return str;
@@ -32,23 +41,6 @@ public class StringUtils {
 				list.add(s.toLowerCase().trim());
 		}
 		return list;
-	}
-
-	public static List<String> sortByLength(List<String> dic, boolean isDesc) {
-		Map<Integer, Double> indexLenMap = new HashMap<Integer, Double>();
-		if (dic == null)
-			return null;
-		if (dic.size() == 0)
-			return dic;
-		for (int i = 0; i < dic.size(); i++) {
-			indexLenMap.put(i, dic.get(i).length() + 0.0d);
-		}
-		indexLenMap = CommonUtils.sortMapByValue(indexLenMap, isDesc);
-		List<String> retList = new ArrayList<String>();
-		for (Map.Entry<Integer, Double> entry : indexLenMap.entrySet()) {
-			retList.add(dic.get(entry.getKey()));
-		}
-		return retList;
 	}
 
 	public static boolean containCamel(String src, String str) {
@@ -128,10 +120,29 @@ public class StringUtils {
 	}
 
 	/**
-	 * @param filePathAndName
-	 * @throws FileNotFoundException
-	 * @throws UnsupportedEncodingException
+	 * sort the given string list by length
+	 * 
+	 * @param strList
+	 * @param isDesc
+	 * @return
 	 */
+	public static List<String> sortByLength(List<String> strList, boolean isDesc) {
+		Map<Integer, Double> indexLenMap = new HashMap<Integer, Double>();
+		if (strList == null)
+			return null;
+		if (strList.size() == 0)
+			return strList;
+		for (int i = 0; i < strList.size(); i++) {
+			indexLenMap.put(i, strList.get(i).length() + 0.0d);
+		}
+		indexLenMap = CommonUtils.sortMapByValue(indexLenMap, isDesc);
+		List<String> retList = new ArrayList<String>();
+		for (Map.Entry<Integer, Double> entry : indexLenMap.entrySet()) {
+			retList.add(strList.get(entry.getKey()));
+		}
+		return retList;
+	}
+
 	public static String clearComment(String filecontent) {
 		// str =
 		// str.replaceAll("\\/\\/[^\\n]*|\\/\\*([^\\*^\\/]*|[\\*^\\/*]*|[^\\**\\/]*)*\\*\\/",
@@ -296,6 +307,12 @@ public class StringUtils {
 		return str.toLowerCase();
 	}
 
+	/**
+	 * check whether the first letter of the given string is lowcase
+	 * 
+	 * @param str
+	 * @return
+	 */
 	public static boolean isFirstLowCase(String str) {
 		if (isBlank(str))
 			return false;
@@ -308,12 +325,68 @@ public class StringUtils {
 			return false;
 	}
 
-	// public static String[] splitAsCamel(String str) {
-	// // str = underScoreToCamel(str);
-	// str = camelToUnderScore(str);
-	// str = normalize(str);
-	// return str.split(" ");
-	// }
+	/**
+	 * @功能 将字符串首字母转为大写
+	 * @param str
+	 *            要转换的字符串
+	 * @return String 型值
+	 */
+	public static String toUpCaseFirst(String str) {
+		if (str == null || "".equals(str)) {
+			return str;
+		} else {
+			char[] temp = str.toCharArray();
+			temp[0] = str.toUpperCase().toCharArray()[0];
+			str = String.valueOf(temp);
+		}
+
+		return str;
+	}
+
+	public static String toLowCaseFirst(String str) {
+		if (str == null || "".equals(str)) {
+			return str;
+		} else {
+			char[] temp = str.toCharArray();
+			temp[0] = str.toLowerCase().toCharArray()[0];
+			str = String.valueOf(temp);
+		}
+
+		return str;
+	}
+
+	/**
+	 * 批量将英文字符串首字母转为大写
+	 * 
+	 * @param str
+	 *            要转换的字符串数组
+	 * @return 字符数组
+	 */
+	public static String[] toUpCaseFirst(String[] str) {
+		if (str == null || str.length == 0) {
+			return str;
+		} else {
+			String[] result = new String[str.length];
+			for (int i = 0; i < result.length; ++i) {
+				result[i] = toUpCaseFirst(str[i]);
+			}
+
+			return result;
+		}
+	}
+
+	public static String[] toLowCaseFirst(String[] str) {
+		if (str == null || str.length == 0) {
+			return str;
+		} else {
+			String[] result = new String[str.length];
+			for (int i = 0; i < result.length; ++i) {
+				result[i] = toLowCaseFirst(str[i]);
+			}
+
+			return result;
+		}
+	}
 
 	public static String trimRight(String str) {
 		if (str.length() > 9) {
@@ -445,11 +518,50 @@ public class StringUtils {
 		return arr[0];
 	}
 
-	public static boolean checkRegex(String str, String regex) {
-		Pattern pattern = Pattern.compile(regex);
-		// String str ="中国China美国";
-		Matcher matcher = pattern.matcher(str);
-		return matcher.matches();
+	/**
+	 * Say whether this regular expression can be found at the beginning of this
+	 * String. This method provides one of the two "missing" convenience methods
+	 * for regular expressions in the String class in JDK1.4.
+	 *
+	 * @param str
+	 *            String to search for match at start of
+	 * @param regex
+	 *            String to compile as the regular expression
+	 * @return Whether the regex can be found at the start of str
+	 */
+	public static boolean lookingAt(String str, String regex) {
+		return Pattern.compile(regex).matcher(str).lookingAt();
+	}
+
+	/**
+	 * Say whether this regular expression matches this String. This method is
+	 * the same as the String.matches() method, and is included just to give a
+	 * call that is parallel to the other static regex methods in this class.
+	 *
+	 * @param str
+	 *            String to search for match at start of
+	 * @param regex
+	 *            String to compile as the regular expression
+	 * @return Whether the regex matches the whole of this str
+	 */
+	public static boolean matches(String str, String regex) {
+		return Pattern.compile(regex).matcher(str).matches();
+	}
+
+	/**
+	 * Say whether this regular expression can be found inside this String. This
+	 * method provides one of the two "missing" convenience methods for regular
+	 * expressions in the String class in JDK1.4. This is the one you'll want to
+	 * use all the time if you're used to Perl. What were they smoking?
+	 *
+	 * @param str
+	 *            String to search for match in
+	 * @param regex
+	 *            String to compile as the regular expression
+	 * @return Whether the regex can be found in str
+	 */
+	public static boolean find(String str, String regex) {
+		return Pattern.compile(regex).matcher(str).find();
 	}
 
 	public static String findOneByRegex(String input, String regex) {
@@ -489,69 +601,6 @@ public class StringUtils {
 		}
 
 		return result;
-	}
-
-	/**
-	 * @功能 将字符串首字母转为大写
-	 * @param str
-	 *            要转换的字符串
-	 * @return String 型值
-	 */
-	public static String toUpCaseFirst(String str) {
-		if (str == null || "".equals(str)) {
-			return str;
-		} else {
-			char[] temp = str.toCharArray();
-			temp[0] = str.toUpperCase().toCharArray()[0];
-			str = String.valueOf(temp);
-		}
-
-		return str;
-	}
-
-	public static String toLowCaseFirst(String str) {
-		if (str == null || "".equals(str)) {
-			return str;
-		} else {
-			char[] temp = str.toCharArray();
-			temp[0] = str.toLowerCase().toCharArray()[0];
-			str = String.valueOf(temp);
-		}
-
-		return str;
-	}
-
-	/**
-	 * 批量将英文字符串首字母转为大写
-	 * 
-	 * @param str
-	 *            要转换的字符串数组
-	 * @return 字符数组
-	 */
-	public static String[] toUpCaseFirst(String[] str) {
-		if (str == null || str.length == 0) {
-			return str;
-		} else {
-			String[] result = new String[str.length];
-			for (int i = 0; i < result.length; ++i) {
-				result[i] = toUpCaseFirst(str[i]);
-			}
-
-			return result;
-		}
-	}
-
-	public static String[] toLowCaseFirst(String[] str) {
-		if (str == null || str.length == 0) {
-			return str;
-		} else {
-			String[] result = new String[str.length];
-			for (int i = 0; i < result.length; ++i) {
-				result[i] = toLowCaseFirst(str[i]);
-			}
-
-			return result;
-		}
 	}
 
 	public static String htmlFilter(String htmlStr) {
@@ -674,9 +723,8 @@ public class StringUtils {
 		// TODO Auto-generated method stub
 		// String sql = "insert into 'category' value(1,'abc',2,3,4)";
 		// String regex = "(?:\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,3}$)";
-		String str = "汉子";
-		System.out.println(str2Unicode(str));
-		System.out.println(getUnicode(str));
+		String s = "fsads(fa)()afdsf";
+		System.out.println(removerRoundBrackets(s));
 	}
 
 	/**
@@ -703,10 +751,145 @@ public class StringUtils {
 		return str.trim();
 	}
 
+	public static String join(Collection<?> s, String delimiter) {
+		StringBuffer buffer = new StringBuffer();
+		Iterator<?> iter = s.iterator();
+		while (iter.hasNext()) {
+			buffer.append(iter.next());
+			if (iter.hasNext()) {
+				buffer.append(delimiter);
+			}
+		}
+		return buffer.toString();
+	}
+
+	public static <T> String join(T[] arr, String delimiter) {
+		return join(Arrays.asList(arr), delimiter);
+	}
+
 	public static String trimOne(String str) {
 		if (str == null)
 			return null;
 		return str.replaceAll("\\s+", " ");
 	}
 
+	/**
+	 * Splits on whitespace (\\s+).
+	 */
+	public static List split(String s) {
+		return (split(s, "\\s+"));
+	}
+
+	/**
+	 * Splits the given string using the given regex as delimiters. This method
+	 * is the same as the String.split() method (except it throws the results in
+	 * a List), and is included just to give a call that is parallel to the
+	 * other static regex methods in this class.
+	 *
+	 * @param str
+	 *            String to split up
+	 * @param regex
+	 *            String to compile as the regular expression
+	 * @return List of Strings resulting from splitting on the regex
+	 */
+	public static List split(String str, String regex) {
+		return (Arrays.asList(str.split(regex)));
+	}
+
+	/**
+	 * Return a String of length a minimum of totalChars characters by padding
+	 * the input String str with spaces. If str is already longer than
+	 * totalChars, it is returned unchanged.
+	 */
+	public static String pad(String str, int totalChars) {
+		if (str == null)
+			str = "null";
+		int slen = str.length();
+		StringBuffer sb = new StringBuffer(str);
+		for (int i = 0; i < totalChars - slen; i++) {
+			sb.append(" ");
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Pads the toString value of the given Object.
+	 */
+	public static String pad(Object obj, int totalChars) {
+		return pad(obj.toString(), totalChars);
+	}
+
+	/**
+	 * Pad or trim so as to produce a string of exactly a certain length.
+	 *
+	 * @param str
+	 *            The String to be padded or truncated
+	 * @param num
+	 *            The desired length
+	 */
+	public static String padOrTrim(String str, int num) {
+		if (str == null)
+			str = "null";
+		int leng = str.length();
+		if (leng < num) {
+			StringBuffer sb = new StringBuffer(str);
+			for (int i = 0; i < num - leng; i++) {
+				sb.append(" ");
+			}
+			return sb.toString();
+		} else if (leng > num) {
+			return str.substring(0, num);
+		} else {
+			return str;
+		}
+	}
+
+	/**
+	 * Pad or trim the toString value of the given Object.
+	 */
+	public static String padOrTrim(Object obj, int totalChars) {
+		return padOrTrim(obj.toString(), totalChars);
+	}
+
+	/**
+	 * Pads the given String to the left with spaces to ensure that it's at
+	 * least totalChars long.
+	 */
+	public static String padLeft(String str, int totalChars) {
+		if (str == null)
+			str = "null";
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < totalChars - str.length(); i++) {
+			sb.append(" ");
+		}
+		sb.append(str);
+		return sb.toString();
+	}
+
+	public static String padLeft(Object obj, int totalChars) {
+		return padLeft(obj.toString(), totalChars);
+	}
+
+	public static String padLeft(int i, int totalChars) {
+		return padLeft(new Integer(i), totalChars);
+	}
+
+	public static String padLeft(double d, int totalChars) {
+		return padLeft(new Double(d), totalChars);
+	}
+
+	/**
+	 * Returns s if it's at most maxWidth chars, otherwise chops right side to
+	 * fit.
+	 */
+	public static String trim(String s, int maxWidth) {
+		if (s.length() <= maxWidth) {
+			return (s);
+		}
+		return (s.substring(0, maxWidth));
+	}
+
+	public static String trim(Object obj, int maxWidth) {
+		return trim(obj.toString(), maxWidth);
+	}
 }
